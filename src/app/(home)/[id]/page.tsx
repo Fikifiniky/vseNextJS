@@ -2,13 +2,40 @@ import BrandAndModelFormFields from '@/components/BrandAndModelFormFields'
 import CarList from '@/components/CarList'
 import prisma from '@/utils/prisma'
 
-const getCars = async () => {
+const getCars = async (request: string) => {
+
+  const splitArray = request.split("%26")
+  const brandIdObj = await prisma.brand.findFirst({
+    where: {
+      name: {
+        equals: splitArray[0],
+      }
+    }
+  })
+  console.log("id " + splitArray[0])
+  const modelIdObj = await prisma.carModel.findFirst({
+    where: {
+      name: {
+        equals: splitArray[1],
+      }
+    }
+  })
+  
   const cars = await prisma.car.findMany({
+    where: {
+      brandId: {
+        equals: brandIdObj?.id,
+      },
+      modelId: {
+        equals: modelIdObj?.id,
+      },
+    },
     include: {
       model: true,
       brand: true,
     },
   })
+
   return cars
 }
 
@@ -23,14 +50,15 @@ const getBrands = async () => {
   return brands
 }
 
-const HomePage = async (param: string) => {
 
-  const cars = await getCars()
+const HomePage = async ({ params }: { params: { id: string } }) => {
+  
+  const carsS = await getCars(params.id)
   const models = await getModels()
   const brands = await getBrands()
 
 
-
+ 
   return (
     <div className='mx-auto max-w-3xl'>
       <h1 className='text-2xl'>Home Page</h1>
@@ -38,10 +66,12 @@ const HomePage = async (param: string) => {
         <BrandAndModelFormFields models={models} brands={brands}/>
         
       </form>
-      <CarList cars={cars} />
+      <CarList cars={carsS} />
       
     </div>
   )
+
+
 }
 
 export default HomePage
