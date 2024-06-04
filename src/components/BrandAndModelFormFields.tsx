@@ -24,9 +24,9 @@ const BrandAndModelFormFields = ({
   }, [brandId, models])
   return (
     <Fragment>
-      <label>Brand</label>
+      <label className="font-bold">Brand</label>
       <select
-        className='form-field'
+        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
         name="brandId"
         required={true}
         id=""
@@ -49,8 +49,8 @@ const BrandAndModelFormFields = ({
           </option>
         ))}
       </select>
-      <label>Model</label>
-      <select name="modelId" required={true} onChange={(e) => {
+      <label className="font-bold">Model</label>
+      <select className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' name="modelId" required={true} onChange={(e) => {
 
         const modelOb = filteredModels.find(obj => {
           return obj.id === e.target.value
@@ -72,6 +72,10 @@ const BrandAndModelFormFields = ({
 
       <Link href={'/'}>
         <button className='mt-5 bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded'>Reset</button>
+      </Link>
+
+      <Link href={'/car/new'}>
+        <button className='mt-5 bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-b-4 border-green-700 hover:border-green-500 rounded'>Add New Car</button>
       </Link>
       
     </Fragment>
